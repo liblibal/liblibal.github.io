@@ -154,19 +154,103 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-scraper" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2023/02/21/hello-world/">Hello World</a>
+      <a class="article-title" href="/2023/03/10/scraper/">scraper</a>
     </h1>
   
 
         
-        <a href="/2023/02/21/hello-world/" class="archive-article-date">
+        <a href="/2023/03/10/scraper/" class="archive-article-date">
+  	<time datetime="2023-03-10T06:31:11.560Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-03-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>前置import</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request </span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br></pre></td></tr></tbody></table></figure>
+
+<p>request类</p>
+<figure class="highlight py"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">request=urllib.request.Request(<span class="string">'https://baidu.com'</span>,data=<span class="literal">None</span>，headers={}</span><br><span class="line">  ，origin_req_host=<span class="literal">None</span>,unverifiable=<span class="literal">False</span>,method=<span class="literal">None</span></span><br><span class="line">    )</span><br></pre></td></tr></tbody></table></figure>
+
+<p>其中headers具体内容</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">headers={</span><br><span class="line">   <span class="string">'User-Agent'</span>:<span class="string">'Mozilla/5.0(X11;U;Linux i686) Gecko/20230310 Firefox/2.0.0.11)'</span> <span class="comment">#伪装成firefox</span></span><br><span class="line">   <span class="string">'Host'</span>: <span class="string">'www.httpbin.org'</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>使用cookie</p>
+<p> 前置 import http.cookiejar</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cookie=http.cookiejar.CookieJar()</span><br><span class="line">handler=urllib.request.HTTPCookieProcessor(cookie)</span><br><span class="line">opener=urllib.request.build_opener(handler)</span><br><span class="line">response=opener.<span class="built_in">open</span>(<span class="string">'https://www.baidu.com'</span>)</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> cookie:</span><br><span class="line">  <span class="built_in">print</span>(item.name+<span class="string">"="</span>+item.value)</span><br><span class="line"></span><br><span class="line"><span class="comment">#或（存文件</span></span><br><span class="line">filename=<span class="string">'cookie.txt'</span></span><br><span class="line">cookie=http.cookiejar.MozillaCookieJar(filename)</span><br><span class="line">handler=urllib.request.HTTPCookieProcessor(cookie)</span><br><span class="line">opener=urllib.request.build_opener(handler)</span><br><span class="line">response=opener.<span class="built_in">open</span>(<span class="string">'https://www.baidu.com'</span>)</span><br><span class="line">cookie.save(ignore_discard=<span class="literal">True</span>,ignore_expires=<span class="literal">True</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>使用requests库import requests</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">response=requests.get('(url)',headers=headers),params=data(传数据))</span><br><span class="line">response=requests.post('(url)',data=data)   (post请求2)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>返回值</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print(response.status_code)#状态码</span><br><span class="line">print(response.headers)#响应头</span><br><span class="line">print(response.cookies)#cookie</span><br><span class="line">print(response.text)#内容</span><br><span class="line">print(response.content)#也是内容</span><br></pre></td></tr></tbody></table></figure>
+
+<p>上传cookie</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">headers={</span><br><span class="line"> 'Cookie':'balabala'</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2023/03/10/scraper/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-test" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/02/21/test/">Test</a>
+    </h1>
+  
+
+        
+        <a href="/2023/02/21/test/" class="archive-article-date">
   	<time datetime="2023-02-21T09:31:26.627Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2023-02-21</time>
 </a>
         
@@ -187,6 +271,7 @@
 <h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></tbody></table></figure>
 
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo clean   # 清除缓存文件等</span><br><span class="line">hexo g       # 生成页面</span><br><span class="line">hexo s       # 启动预览</span><br><span class="line">hexo d       # 发布</span><br></pre></td></tr></tbody></table></figure>
 
       
 
@@ -199,7 +284,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2023/02/21/hello-world/">展开全文 >></a>
+          <a class="article-more-a" href="/2023/02/21/test/">展开全文 >></a>
         </p>
       
 
